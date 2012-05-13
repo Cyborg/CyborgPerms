@@ -1,0 +1,8 @@
+database:
+   driver: MySQL
+   mysql:
+      host:
+      port:
+      database:
+      user:
+      password:
