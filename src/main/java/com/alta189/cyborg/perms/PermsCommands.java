@@ -414,12 +414,4 @@ public class PermsCommands {
 		return builder.toString();
 	}
 
-	@Command(name = "rage", desc = "test")
-	public String test(CommandSource source, CommandContext context) {
-		if (context.getPrefix() == null || !context.getPrefix().equals("."))
-			return null;
-		Cyborg.getInstance().shutdown();
-		return "exited!" + Cyborg.getInstance().getMessageDelay();
-	}
-
 }
