@@ -1,13 +1,11 @@
 package com.alta189.cyborg.perms;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import com.alta189.simplesave.Field;
 import com.alta189.simplesave.Id;
 import com.alta189.simplesave.Table;
-
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.codec.digest.DigestUtils;
 
@@ -29,7 +27,6 @@ public class CyborgUser {
 	private String rawPerms;
 	@Field
 	private String rawGroups;
-	
 	// Non-persistence data
 	private final List<String> hostnames = new ArrayList<String>();
 	private final List<String> tempHostnames = new ArrayList<String>();
@@ -53,7 +50,6 @@ public class CyborgUser {
 		if (rawGroups != null) {
 			Collections.addAll(groups, rawGroups.split(";"));
 		}
-
 	}
 
 	protected void flush() {
@@ -110,14 +106,17 @@ public class CyborgUser {
 
 	public boolean hasPerm(String perm, boolean ignoreWildcard) {
 		perm = perm.toLowerCase();
-		if (hasNegatedPerm(perm))
+		if (hasNegatedPerm(perm)) {
 			return false;
+		}
 
-		if (!ignoreWildcard && wildcardPerm)
+		if (!ignoreWildcard && wildcardPerm) {
 			return true;
+		}
 
-		if (perms.contains(perm))
+		if (perms.contains(perm)) {
 			return true;
+		}
 
 		for (String g : groups) {
 			CyborgGroup group = PermissionManager.getGroup(g);
@@ -195,7 +194,7 @@ public class CyborgUser {
 		result.addAll(tempHostnames);
 		return result;
 	}
-	
+
 	public List<String> getRawHostnames() {
 		return hostnames;
 	}

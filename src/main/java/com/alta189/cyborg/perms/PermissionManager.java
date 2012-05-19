@@ -1,14 +1,12 @@
 package com.alta189.cyborg.perms;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.alta189.simplesave.Configuration;
 import com.alta189.simplesave.Database;
 import com.alta189.simplesave.DatabaseFactory;
 import com.alta189.simplesave.exceptions.ConnectionException;
 import com.alta189.simplesave.exceptions.TableRegistrationException;
-
+import java.util.HashMap;
+import java.util.Map;
 import org.pircbotx.User;
 
 public class PermissionManager {
@@ -50,12 +48,12 @@ public class PermissionManager {
 				user.flush();
 				db.save(CyborgUser.class, user);
 			}
-			
+
 			for (CyborgGroup group : groups.values()) {
 				group.flush();
 				db.save(CyborgGroup.class, group);
 			}
-			
+
 			try {
 				db.close();
 			} catch (ConnectionException e) {
@@ -101,11 +99,11 @@ public class PermissionManager {
 		CyborgUser user = getUserFromHostname(hostname);
 		return user != null && user.hasPerm(perm, ignoreWildcard);
 	}
-	
+
 	public static boolean hasPerm(User user, String perm) {
 		return hasPerm(user, perm, false);
 	}
-	
+
 	public static boolean hasPerm(User user, String perm, boolean ignoreWildcard) {
 		return hasPerm(user.getLogin() + "@" + user.getHostmask(), perm, ignoreWildcard);
 	}
@@ -127,10 +125,11 @@ public class PermissionManager {
 		System.out.println("hostname = " + hostname);
 		registerUser(name, login + "@" + hostname, password);
 	}
-	
+
 	public static void addGroup(CyborgGroup group) {
-		if (groups.get(group.getName().toLowerCase()) != null)
+		if (groups.get(group.getName().toLowerCase()) != null) {
 			return;
+		}
 		groups.put(group.getName().toLowerCase(), group);
 	}
 }

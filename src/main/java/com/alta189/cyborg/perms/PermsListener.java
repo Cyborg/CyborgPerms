@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.alta189.cyborg.perms;
 
 import com.alta189.cyborg.Cyborg;
@@ -25,13 +24,10 @@ import com.alta189.cyborg.api.event.Order;
 import com.alta189.cyborg.api.event.user.QuitEvent;
 
 public class PermsListener {
-	
 	@EventHandler(order = Order.EARLIEST)
 	public void onQuit(QuitEvent event) {
-		if (event.getUser().getNick().equals(Cyborg.getInstance().getNick()))
+		if (event.getUser().getNick().equals(Cyborg.getInstance().getNick())) {
 			return;
-
-
+		}
 	}
-	
 }

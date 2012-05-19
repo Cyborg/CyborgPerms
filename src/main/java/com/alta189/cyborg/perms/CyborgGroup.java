@@ -1,31 +1,24 @@
 package com.alta189.cyborg.perms;
 
+import com.alta189.simplesave.Field;
+import com.alta189.simplesave.Id;
+import com.alta189.simplesave.Table;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import com.alta189.simplesave.Field;
-import com.alta189.simplesave.Id;
-import com.alta189.simplesave.Table;
-
 @Table(name = "CyborgPermsGroup")
 public class CyborgGroup {
-
 	@Id
 	private int id;
-
 	@Field
 	private String name;
-
 	@Field
 	private boolean wildcardPerm;
-
 	@Field
 	private String rawNegatedPerms;
-
 	@Field
 	private String rawPerms;
-
 	// Non-persistence data
 	private final List<String> negatedperms = new ArrayList<String>();
 	private final List<String> perms = new ArrayList<String>();
@@ -39,7 +32,7 @@ public class CyborgGroup {
 			Collections.addAll(perms, rawPerms.split(";"));
 		}
 	}
-	
+
 	protected void flush() {
 		StringBuilder builder = new StringBuilder();
 		for (String perm : negatedperms) {
@@ -60,11 +53,13 @@ public class CyborgGroup {
 
 	public boolean hasPerm(String perm, boolean ignoreWildcard) {
 		perm = perm.toLowerCase();
-		if (hasNegatedPerm(perm))
+		if (hasNegatedPerm(perm)) {
 			return false;
+		}
 
-		if (!ignoreWildcard && wildcardPerm)
+		if (!ignoreWildcard && wildcardPerm) {
 			return true;
+		}
 
 		return perms.contains(perm);
 	}
@@ -93,8 +88,6 @@ public class CyborgGroup {
 		this.wildcardPerm = wildcardPerm;
 	}
 
-
-
 	public void addPerm(String perm) {
 		perms.add(perm.toLowerCase());
 	}
@@ -118,5 +111,4 @@ public class CyborgGroup {
 	public List<String> getNegatedPerms() {
 		return negatedperms;
 	}
-	
 }
