@@ -58,7 +58,7 @@ public class PermsCommands {
 				if (getUser(context.getArgs()[0]) != null) {
 					return get(ReturnType.MESSAGE, "Someone with this nick has already registered", source, context);
 				}
-				registerUser(user.getNick(), user.getLogin(), user.getHostmask(), context.getArgs()[1]);
+				registerUser(context.getArgs()[0], user.getLogin(), user.getHostmask(), context.getArgs()[1]);
 				return get(ReturnType.MESSAGE, "registered!", source, context);
 		}
 		return null;
