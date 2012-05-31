@@ -9,7 +9,7 @@ import java.util.List;
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.codec.digest.DigestUtils;
 
-@Table(name = "CyborgPermsUsers")
+@Table(name = "permsusers")
 public class CyborgUser {
 	@Id
 	private int id;
