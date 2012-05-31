@@ -5,6 +5,9 @@ import com.alta189.simplesave.Database;
 import com.alta189.simplesave.DatabaseFactory;
 import com.alta189.simplesave.exceptions.ConnectionException;
 import com.alta189.simplesave.exceptions.TableRegistrationException;
+
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import org.pircbotx.User;
@@ -14,6 +17,7 @@ public class PermissionManager {
 	private static final Map<String, CyborgGroup> groups = new HashMap<String, CyborgGroup>();
 	private static Database db;
 	private static Configuration dbConfig;
+	private static SaveThread saveThread;
 
 	protected static boolean init() {
 		db = DatabaseFactory.createNewDatabase(dbConfig);
@@ -39,10 +43,14 @@ public class PermissionManager {
 			groups.put(group.getName().toLowerCase(), group);
 		}
 
+		saveThread = new SaveThread();
+		saveThread.start();
+
 		return true;
 	}
 
 	protected static boolean close() {
+		saveThread.interrupt();
 		if (db.isConnected()) {
 			for (CyborgUser user : users.values()) {
 				user.flush();
@@ -120,9 +128,6 @@ public class PermissionManager {
 	}
 
 	public static void registerUser(String name, String login, String hostname, String password) {
-		System.out.println("name = " + name);
-		System.out.println("login = " + login);
-		System.out.println("hostname = " + hostname);
 		registerUser(name, login + "@" + hostname, password);
 	}
 
@@ -132,4 +137,17 @@ public class PermissionManager {
 		}
 		groups.put(group.getName().toLowerCase(), group);
 	}
+
+	public static Collection<CyborgUser> getUsers() {
+		return Collections.unmodifiableCollection(users.values());
+	}
+
+	public static Collection<CyborgGroup> getGroups() {
+		return Collections.unmodifiableCollection(groups.values());
+	}
+
+	protected static Database getDatabase() {
+		return db;
+	}
+
 }
