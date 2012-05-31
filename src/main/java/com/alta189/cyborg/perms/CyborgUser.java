@@ -35,19 +35,19 @@ public class CyborgUser {
 	private final List<String> groups = new ArrayList<String>();
 
 	protected void load() {
-		if (rawNegatedPerms != null) {
+		if (rawNegatedPerms != null && !rawNegatedPerms.isEmpty() && !rawNegatedPerms.trim().equals(";")) {
 			Collections.addAll(negatedperms, rawNegatedPerms.split(";"));
 		}
 
-		if (rawPerms != null) {
+		if (rawPerms != null && !rawPerms.isEmpty() && !rawPerms.trim().equals(";")) {
 			Collections.addAll(perms, rawPerms.split(";"));
 		}
 
-		if (rawHostnames != null) {
+		if (rawHostnames != null && !rawHostnames.isEmpty() && !rawHostnames.trim().equals(";")) {
 			Collections.addAll(hostnames, rawHostnames.split(";"));
 		}
 
-		if (rawGroups != null) {
+		if (rawGroups != null && !rawGroups.isEmpty() && !rawGroups.trim().equals(";")) {
 			Collections.addAll(groups, rawGroups.split(";"));
 		}
 	}
@@ -57,25 +57,42 @@ public class CyborgUser {
 		for (String perm : negatedperms) {
 			builder.append(perm).append(";");
 		}
-		rawNegatedPerms = builder.toString();
+
+		if (builder.toString() == null || builder.toString().isEmpty() || builder.toString().trim().equals(";")) {
+			rawNegatedPerms = "";
+		} else {
+			rawNegatedPerms = builder.toString();
+		}
 
 		builder = new StringBuilder();
 		for (String perm : perms) {
 			builder.append(perm).append(";");
 		}
-		rawPerms = builder.toString();
+		if (builder.toString() == null || builder.toString().isEmpty() || builder.toString().trim().equals(";")) {
+			rawPerms = "";
+		} else {
+			rawPerms = builder.toString();
+		}
 
 		builder = new StringBuilder();
 		for (String hostname : hostnames) {
 			builder.append(hostname).append(";");
 		}
-		rawHostnames = builder.toString();
+		if (builder.toString() == null || builder.toString().isEmpty() || builder.toString().trim().equals(";")) {
+			rawHostnames = "";
+		} else {
+			rawHostnames = builder.toString();
+		}
 
 		builder = new StringBuilder();
 		for (String group : groups) {
 			builder.append(group).append(";");
 		}
-		rawGroups = builder.toString();
+		if (builder.toString() == null || builder.toString().isEmpty() || builder.toString().trim().equals(";")) {
+			rawGroups = "";
+		} else {
+			rawGroups = builder.toString();
+		}
 	}
 
 	@Override

@@ -24,11 +24,11 @@ public class CyborgGroup {
 	private final List<String> perms = new ArrayList<String>();
 
 	protected void load() {
-		if (rawNegatedPerms != null) {
+		if (rawNegatedPerms != null && !rawNegatedPerms.isEmpty() && !rawNegatedPerms.trim().equals(";")) {
 			Collections.addAll(negatedperms, rawNegatedPerms.split(";"));
 		}
 
-		if (rawPerms != null) {
+		if (rawPerms != null && !rawPerms.isEmpty() && !rawPerms.trim().equals(";")) {
 			Collections.addAll(perms, rawPerms.split(";"));
 		}
 	}
@@ -38,13 +38,22 @@ public class CyborgGroup {
 		for (String perm : negatedperms) {
 			builder.append(perm).append(";");
 		}
-		rawNegatedPerms = builder.toString();
+
+		if (builder.toString() == null || builder.toString().isEmpty() || builder.toString().trim().equals(";")) {
+			rawNegatedPerms = "";
+		} else {
+			rawNegatedPerms = builder.toString();
+		}
 
 		builder = new StringBuilder();
 		for (String perm : perms) {
 			builder.append(perm).append(";");
 		}
-		rawPerms = builder.toString();
+		if (builder.toString() == null || builder.toString().isEmpty() || builder.toString().trim().equals(";")) {
+			rawPerms = "";
+		} else {
+			rawPerms = builder.toString();
+		}
 	}
 
 	public boolean hasPerm(String perm) {
