@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-@Table(name = "permsgroups")
+@Table("permsgroups")
 public class CyborgGroup {
 	@Id
 	private int id;
