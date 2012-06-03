@@ -25,7 +25,7 @@ public class SaveThread extends Thread {
 			try {
 				Thread.sleep(5000);
 			} catch (InterruptedException e) {
-				e.printStackTrace();
+				break;
 			}
 
 			for (CyborgUser user : PermissionManager.getUsers()) {
