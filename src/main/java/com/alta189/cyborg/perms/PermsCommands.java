@@ -18,11 +18,14 @@
  */
 package com.alta189.cyborg.perms;
 
+import com.alta189.cyborg.Cyborg;
 import com.alta189.cyborg.api.command.CommandContext;
 import com.alta189.cyborg.api.command.CommandResult;
 import com.alta189.cyborg.api.command.CommandSource;
 import com.alta189.cyborg.api.command.ReturnType;
 import com.alta189.cyborg.api.command.annotation.Command;
+import com.alta189.cyborg.api.command.annotation.Hidden;
+import com.alta189.cyborg.api.command.annotation.Usage;
 import org.pircbotx.User;
 
 import static com.alta189.cyborg.api.command.CommandResultUtil.get;
@@ -37,6 +40,7 @@ public class PermsCommands {
 	private static final String newLine = System.getProperty("line.separator");
 	
 	@Command(name = "register", desc = "Register with CyborgPerms")
+	@Usage(".register <name> <password>")
 	public CommandResult register(CommandSource source, CommandContext context) {
 		switch (source.getSource()) {
 			case TERMINALUSER:
@@ -61,10 +65,12 @@ public class PermsCommands {
 				registerUser(context.getArgs()[0], user.getLogin(), user.getHostmask(), context.getArgs()[1]);
 				return get(ReturnType.MESSAGE, "registered!", source, context);
 		}
+		Cyborg.getInstance().getChannel("#channel");
 		return null;
 	}
 
 	@Command(name = "authenticate", desc = "Authenticates you with CyborgPerms", aliases = {"auth"})
+	@Usage(".authenticate <name> <password>")
 	public CommandResult authenticate(CommandSource source, CommandContext context) {
 		switch (source.getSource()) {
 			case TERMINALUSER:
@@ -94,6 +100,7 @@ public class PermsCommands {
 	}
 
 	@Command(name = "addhostname", desc = "Adds a hostname to a CyborgPerms account", aliases = {"addhost", "addhostmask"})
+	@Usage(".addhostname <name> <password>")
 	public CommandResult addHostname(CommandSource source, CommandContext context) {
 		switch (source.getSource()) {
 			case TERMINALUSER:
@@ -125,7 +132,9 @@ public class PermsCommands {
 		return null;
 	}
 
+	@Hidden
 	@Command(name = "addperm", desc = "adds perm to a user")
+	@Usage("addperm <name> <perms>...")
 	public CommandResult addPerm(CommandSource source, CommandContext context) {
 		if (source.getSource() == CommandSource.Source.USER && (context.getPrefix() == null || !context.getPrefix().equals("."))) {
 			return null;
@@ -152,7 +161,9 @@ public class PermsCommands {
 		return null;
 	}
 
+	@Hidden
 	@Command(name = "remperm", desc = "removes perm from a user", aliases = {"rmperm", "removeperm", "delperm", "deleteperm"})
+	@Usage("remperm <name> <perms>...")
 	public CommandResult remerm(CommandSource source, CommandContext context) {
 		if (source.getSource() == CommandSource.Source.USER && (context.getPrefix() == null || !context.getPrefix().equals("."))) {
 			return null;
@@ -179,7 +190,9 @@ public class PermsCommands {
 		return null;
 	}
 
+	@Hidden
 	@Command(name = "listperms", desc = "list perms of a group")
+	@Usage(".listperms <name>")
 	public CommandResult listPerms(CommandSource source, CommandContext context) {
 		if (source.getSource() == CommandSource.Source.USER && (context.getPrefix() == null || !context.getPrefix().equals("."))) {
 			return null;
@@ -204,7 +217,9 @@ public class PermsCommands {
 		return get(ReturnType.MESSAGE, builder.toString(), source, context);
 	}
 
+	@Hidden
 	@Command(name = "wildcardperm", desc = "Removes or gives the wildcard perm to a user")
+	@Usage(".wildcardperm <name> true/false")
 	public CommandResult wildcardPerm(CommandSource source, CommandContext context) {
 		if (source.getSource() == CommandSource.Source.USER && (context.getPrefix() == null || !context.getPrefix().equals("."))) {
 			return null;
@@ -231,7 +246,9 @@ public class PermsCommands {
 		}
 	}
 
+	@Hidden
 	@Command(name = "userinfo", desc = "Returns info on a user")
+	@Usage(".userinfo <name>")
 	public CommandResult userInfo(CommandSource source, CommandContext context) {
 		if (source.getSource() == CommandSource.Source.USER && (context.getPrefix() == null || !context.getPrefix().equals("."))) {
 			return null;
@@ -273,7 +290,9 @@ public class PermsCommands {
 		return get(ReturnType.MESSAGE, builder.toString(), source, context);
 	}
 
+	@Hidden
 	@Command(name = "hasperm", desc = "Checks if a user has perm")
+	@Usage(".hasperm <name> <perm> [ignore wildcard true/false]")
 	public CommandResult hasPermCommand(CommandSource source, CommandContext context) {
 		if (source.getSource() == CommandSource.Source.USER && (context.getPrefix() == null || !context.getPrefix().equals("."))) {
 			return null;
@@ -303,16 +322,18 @@ public class PermsCommands {
 		return get(ReturnType.MESSAGE, builder.toString(), source, context);
 	}
 
+	@Hidden
 	@Command(name = "addgroup", desc = "Adds a user to a group")
+	@Usage(".addgroup <name> <group> ")
 	public CommandResult userAddGroup(CommandSource source, CommandContext context) {
 		if (source.getSource() == CommandSource.Source.USER && (context.getPrefix() == null || !context.getPrefix().equals("."))) {
 			return null;
 		}
-		if (source.getSource() == CommandSource.Source.USER && !hasPerm(source.getUser(), "addgroup.hasperm")) {
+		if (source.getSource() == CommandSource.Source.USER && !hasPerm(source.getUser(), "perms.addgroup")) {
 			return get(ReturnType.NOTICE, "You do not have permission", source, context);
 		}
 		if (context.getArgs() == null || context.getArgs().length < 2) {
-			String body = "Correct usage is " + (source.getSource() == CommandSource.Source.USER ? "." : "") + "hasperm <name> <group> ";
+			String body = "Correct usage is " + (source.getSource() == CommandSource.Source.USER ? "." : "") + "addgroup <name> <group> ";
 			return get(ReturnType.NOTICE, body, source, context);
 		}
 		CyborgUser user = getUser(context.getArgs()[0]);
@@ -326,16 +347,18 @@ public class PermsCommands {
 		return get(ReturnType.MESSAGE, "Added user to group!", source, context);
 	}
 
+	@Hidden
 	@Command(name = "remgroup", desc = "Removes a user from a group")
+	@Usage(".remgroup <name> <group>")
 	public CommandResult userRemGroup(CommandSource source, CommandContext context) {
 		if (source.getSource() == CommandSource.Source.USER && (context.getPrefix() == null || !context.getPrefix().equals("."))) {
 			return null;
 		}
-		if (source.getSource() == CommandSource.Source.USER && !hasPerm(source.getUser(), "addgroup.hasperm")) {
+		if (source.getSource() == CommandSource.Source.USER && !hasPerm(source.getUser(), "perms.remgroup")) {
 			return get(ReturnType.NOTICE, "You do not have permission", source, context);
 		}
 		if (context.getArgs() == null || context.getArgs().length < 2) {
-			String body = "Correct usage is " + (source.getSource() == CommandSource.Source.USER ? "." : "") + "hasperm <name> <group> ";
+			String body = "Correct usage is " + (source.getSource() == CommandSource.Source.USER ? "." : "") + "remgroup <name> <group> ";
 			return get(ReturnType.NOTICE, body, source, context);
 		}
 		CyborgUser user = getUser(context.getArgs()[0]);
@@ -348,7 +371,9 @@ public class PermsCommands {
 
 	//Group Commands
 
+	@Hidden
 	@Command(name = "gadd", desc = "Adds a new group")
+	@Usage(".gadd <name>")
 	public CommandResult addGroupCommand(CommandSource source, CommandContext context) {
 		if (source.getSource() == CommandSource.Source.USER && (context.getPrefix() == null || !context.getPrefix().equals("."))) {
 			return null;
@@ -371,7 +396,9 @@ public class PermsCommands {
 		return get(ReturnType.MESSAGE, "Added group!", source, context);
 	}
 
+	@Hidden
 	@Command(name = "gaddperm", desc = "adds perm to a group")
+	@Usage("gaddperm <name> <perms>...")
 	public CommandResult gaddPerm(CommandSource source, CommandContext context) {
 		if (source.getSource() == CommandSource.Source.USER && (context.getPrefix() == null || !context.getPrefix().equals("."))) {
 			return null;
@@ -398,7 +425,9 @@ public class PermsCommands {
 		return null;
 	}
 
+	@Hidden
 	@Command(name = "gremperm", desc = "removes perm from a group", aliases = {"grmperm", "gremoveperm", "gdelperm", "gdeleteperm"})
+	@Usage(".gremperm <name> <perms>...")
 	public CommandResult gremPerm(CommandSource source, CommandContext context) {
 		if (source.getSource() == CommandSource.Source.USER && (context.getPrefix() == null || !context.getPrefix().equals("."))) {
 			return null;
@@ -425,7 +454,9 @@ public class PermsCommands {
 		return null;
 	}
 
+	@Hidden
 	@Command(name = "glistperms", desc = "list perms of a group")
+	@Usage(".listperms <name> ")
 	public CommandResult glistPerms(CommandSource source, CommandContext context) {
 		if (source.getSource() == CommandSource.Source.USER && (context.getPrefix() == null || !context.getPrefix().equals("."))) {
 			return null;
@@ -450,7 +481,9 @@ public class PermsCommands {
 		return get(ReturnType.MESSAGE, builder.toString(), source, context);
 	}
 
+	@Hidden
 	@Command(name = "gwildcardperm", desc = "Removes or gives the wildcard perm to a group")
+	@Usage(".gwildcardperm <name> true/false")
 	public CommandResult gwildcardPerm(CommandSource source, CommandContext context) {
 		if (source.getSource() == CommandSource.Source.USER && (context.getPrefix() == null || !context.getPrefix().equals("."))) {
 			return null;
@@ -477,7 +510,9 @@ public class PermsCommands {
 		}
 	}
 
+	@Hidden
 	@Command(name = "ghasperm", desc = "Checks if a group has perm")
+	@Usage("ghasperm <name> <perm> [ignore wildcard true/false]")
 	public CommandResult ghasPermCommand(CommandSource source, CommandContext context) {
 		if (source.getSource() == CommandSource.Source.USER && (context.getPrefix() == null || !context.getPrefix().equals("."))) {
 			return null;
