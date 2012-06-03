@@ -96,6 +96,10 @@ public class PermissionManager {
 		return null;
 	}
 
+	public static CyborgUser getUser(User user) {
+		return getUserFromHostname(user.getLogin() + "@" + user.getHostmask());
+	}
+
 	/**
 	 * Checks if someone with the given hostname has the given perm
 	 * @param hostname
