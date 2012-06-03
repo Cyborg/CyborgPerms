@@ -18,7 +18,6 @@
  */
 package com.alta189.cyborg.perms;
 
-import com.alta189.cyborg.Cyborg;
 import com.alta189.cyborg.api.command.CommandContext;
 import com.alta189.cyborg.api.command.CommandResult;
 import com.alta189.cyborg.api.command.CommandSource;
@@ -29,16 +28,12 @@ import com.alta189.cyborg.api.command.annotation.Usage;
 import org.pircbotx.User;
 
 import static com.alta189.cyborg.api.command.CommandResultUtil.get;
-import static com.alta189.cyborg.perms.PermissionManager.addGroup;
-import static com.alta189.cyborg.perms.PermissionManager.getGroup;
-import static com.alta189.cyborg.perms.PermissionManager.getUser;
-import static com.alta189.cyborg.perms.PermissionManager.hasPerm;
-import static com.alta189.cyborg.perms.PermissionManager.registerUser;
+import static com.alta189.cyborg.perms.PermissionManager.*;
 
 public class PermsCommands {
-	
+
 	private static final String newLine = System.getProperty("line.separator");
-	
+
 	@Command(name = "register", desc = "Register with CyborgPerms")
 	@Usage(".register <name> <password>")
 	public CommandResult register(CommandSource source, CommandContext context) {
@@ -65,7 +60,6 @@ public class PermsCommands {
 				registerUser(context.getArgs()[0], user.getLogin(), user.getHostmask(), context.getArgs()[1]);
 				return get(ReturnType.MESSAGE, "registered!", source, context);
 		}
-		Cyborg.getInstance().getChannel("#channel");
 		return null;
 	}
 
@@ -213,7 +207,7 @@ public class PermsCommands {
 			builder.append(perm);
 			builder.append(newLine);
 		}
-		
+
 		return get(ReturnType.MESSAGE, builder.toString(), source, context);
 	}
 
@@ -257,7 +251,7 @@ public class PermsCommands {
 			return get(ReturnType.NOTICE, "You do not have permission", source, context);
 		}
 		if (context.getArgs() == null || context.getArgs().length < 1) {
-			String body =  "Correct usage is " + (source.getSource() == CommandSource.Source.USER ? "." : "") + "userinfo <name>";
+			String body = "Correct usage is " + (source.getSource() == CommandSource.Source.USER ? "." : "") + "userinfo <name>";
 			return get(ReturnType.NOTICE, body, source, context);
 		}
 		CyborgUser user = getUser(context.getArgs()[0]);
@@ -286,7 +280,7 @@ public class PermsCommands {
 				builder.append(", ");
 			}
 		}
-		
+
 		return get(ReturnType.MESSAGE, builder.toString(), source, context);
 	}
 
@@ -318,7 +312,7 @@ public class PermsCommands {
 		builder.append("User '").append(user.getName()).append("' ");
 		builder.append(user.hasPerm(context.getArgs()[1], ignoreWildcard) ? "has " : "does not have ");
 		builder.append("permission '").append(context.getArgs()[1]).append("'");
-		
+
 		return get(ReturnType.MESSAGE, builder.toString(), source, context);
 	}
 
@@ -392,7 +386,7 @@ public class PermsCommands {
 		group = new CyborgGroup();
 		group.setName(context.getArgs()[0]);
 		addGroup(group);
-		
+
 		return get(ReturnType.MESSAGE, "Added group!", source, context);
 	}
 
@@ -477,7 +471,7 @@ public class PermsCommands {
 			builder.append(perm);
 			builder.append(newLine);
 		}
-		
+
 		return get(ReturnType.MESSAGE, builder.toString(), source, context);
 	}
 
