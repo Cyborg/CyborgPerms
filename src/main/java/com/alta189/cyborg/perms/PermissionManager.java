@@ -50,7 +50,10 @@ public class PermissionManager {
 	}
 
 	protected static boolean close() {
-		saveThread.interrupt();
+		try {
+			saveThread.interrupt();
+		} catch (Exception ignored) {
+		}
 		if (db.isConnected()) {
 			for (CyborgUser user : users.values()) {
 				user.flush();
