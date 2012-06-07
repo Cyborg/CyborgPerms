@@ -12,7 +12,7 @@ import org.apache.commons.codec.digest.DigestUtils;
 @Table("permsusers")
 public class CyborgUser {
 	@Id
-	private int id;
+	private long id;
 	@Field
 	private String name;
 	@Field
@@ -149,7 +149,7 @@ public class CyborgUser {
 		return negatedperms.contains(perm.toLowerCase());
 	}
 
-	public int getId() {
+	public long getId() {
 		return id;
 	}
 

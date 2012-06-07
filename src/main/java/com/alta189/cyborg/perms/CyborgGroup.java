@@ -10,7 +10,7 @@ import java.util.List;
 @Table("permsgroups")
 public class CyborgGroup {
 	@Id
-	private int id;
+	private long id;
 	@Field
 	private String name;
 	@Field
@@ -77,7 +77,7 @@ public class CyborgGroup {
 		return negatedperms.contains(perm.toLowerCase());
 	}
 
-	public int getId() {
+	public long getId() {
 		return id;
 	}
 
